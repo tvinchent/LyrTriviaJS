@@ -160,7 +160,7 @@ if (!game.isPlayable()) {
 
   do {
     const roll = Math.floor(Math.random() * 6) + 1;
-    console.log(`\n--- New Roll: ${roll} ---\n`);
+    game.roll(roll);
 
     if (Math.floor(Math.random() * 10) === 7) {
       notAWinner = game.wrongAnswer();
