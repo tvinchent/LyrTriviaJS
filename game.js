@@ -94,6 +94,12 @@ exports.Game = function() {
     askQuestion();
   }
 
+  var goToNextPlayer = function (){
+    currentPlayer += 1;
+    if(currentPlayer == players.length)
+      currentPlayer = 0;
+  }
+
   this.roll = function(roll){
     console.log(players[currentPlayer] + " is the current player");
     console.log("He has rolled a " + roll);
@@ -123,9 +129,8 @@ exports.Game = function() {
                     purses[currentPlayer]  + " Gold Coins.");
 
         var winner = didPlayerWin();
-        currentPlayer += 1;
-        if(currentPlayer == players.length)
-          currentPlayer = 0;
+        
+        goToNextPlayer();
 
         return winner;
       }else{
@@ -147,9 +152,7 @@ exports.Game = function() {
 
       var winner = didPlayerWin();
 
-      currentPlayer += 1;
-      if(currentPlayer == players.length)
-        currentPlayer = 0;
+      goToNextPlayer();
 
       return winner;
     }
@@ -160,9 +163,7 @@ exports.Game = function() {
 		console.log(players[currentPlayer] + " was sent to the penalty box");
 		inPenaltyBox[currentPlayer] = true;
 
-    currentPlayer += 1;
-    if(currentPlayer == players.length)
-      currentPlayer = 0;
+    goToNextPlayer();
 		return true;
   };
 };
