@@ -123,20 +123,18 @@ exports.Game = function() {
   this.wasCorrectlyAnswered = function(){
     if(inPenaltyBox[currentPlayer]){
       if(isGettingOutOfPenaltyBox){
+
         console.log('Answer was correct!!!!');
         purses[currentPlayer] += 1;
         console.log(players[currentPlayer] + " now has " +
                     purses[currentPlayer]  + " Gold Coins.");
-
         var winner = didPlayerWin();
-        
         goToNextPlayer();
 
         return winner;
       }else{
-        currentPlayer += 1;
-        if(currentPlayer == players.length)
-          currentPlayer = 0;
+        
+        goToNextPlayer();
         return true;
       }
 
@@ -145,13 +143,10 @@ exports.Game = function() {
     }else{
 
       console.log("Answer was correct!!!!");
-
       purses[currentPlayer] += 1;
       console.log(players[currentPlayer] + " now has " +
                   purses[currentPlayer]  + " Gold Coins.");
-
       var winner = didPlayerWin();
-
       goToNextPlayer();
 
       return winner;
