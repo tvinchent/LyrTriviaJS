@@ -120,36 +120,33 @@ exports.Game = function() {
     }
   };
 
+  var correctAnswerPhase = function(){
+    console.log('Answer was correct!!!!');
+    purses[currentPlayer] += 1;
+    console.log(players[currentPlayer] + " now has " +
+                purses[currentPlayer]  + " Gold Coins.");
+
+    var winner = didPlayerWin();
+    goToNextPlayer();
+    return winner;
+  }
+
   this.wasCorrectlyAnswered = function(){
     if(inPenaltyBox[currentPlayer]){
       if(isGettingOutOfPenaltyBox){
 
-        console.log('Answer was correct!!!!');
-        purses[currentPlayer] += 1;
-        console.log(players[currentPlayer] + " now has " +
-                    purses[currentPlayer]  + " Gold Coins.");
-        var winner = didPlayerWin();
-        goToNextPlayer();
+        return correctAnswerPhase();
 
-        return winner;
       }else{
-        
+
         goToNextPlayer();
         return true;
       }
 
-
-
     }else{
 
-      console.log("Answer was correct!!!!");
-      purses[currentPlayer] += 1;
-      console.log(players[currentPlayer] + " now has " +
-                  purses[currentPlayer]  + " Gold Coins.");
-      var winner = didPlayerWin();
-      goToNextPlayer();
+      return correctAnswerPhase();
 
-      return winner;
     }
   };
 
