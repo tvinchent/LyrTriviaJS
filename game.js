@@ -127,6 +127,9 @@ exports.Game = function() {
                 purses[currentPlayer]  + " Gold Coins.");
 
     var winner = didPlayerWin();
+
+    didPlayerWin() ? console.log("Next") : console.log(players[currentPlayer] + " HAS WON !");
+
     goToNextPlayer();
     return winner;
   }
