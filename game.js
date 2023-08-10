@@ -120,7 +120,7 @@ exports.Game = function() {
     }
   };
 
-  var correctAnswerPhase = function(){
+  var goodAnswerPhase = function(){
     console.log('Answer was correct!!!!');
     purses[currentPlayer] += 1;
     console.log(players[currentPlayer] + " now has " +
@@ -131,22 +131,17 @@ exports.Game = function() {
     return winner;
   }
 
-  this.wasCorrectlyAnswered = function(){
+  this.goodAnswer = function(){
     if(inPenaltyBox[currentPlayer]){
       if(isGettingOutOfPenaltyBox){
-
-        return correctAnswerPhase();
-
+        return goodAnswerPhase();
       }else{
-
         goToNextPlayer();
         return true;
       }
 
     }else{
-
-      return correctAnswerPhase();
-
+      return goodAnswerPhase();
     }
   };
 
@@ -175,7 +170,7 @@ do{
   if(Math.floor(Math.random()*10) == 7){
     notAWinner = game.wrongAnswer();
   }else{
-    notAWinner = game.wasCorrectlyAnswered();
+    notAWinner = game.goodAnswer();
   }
 
 }while(notAWinner);
