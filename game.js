@@ -30,18 +30,14 @@ exports.Game = function() {
     if (place % NUM_CATEGORIES === 0) return 'Pop';
     if (place % NUM_CATEGORIES === 1) return 'Science';
     if (place % NUM_CATEGORIES === 2) return 'Sports';
-    return 'Rock';
-  };
-
-  this.createRockQuestion = function (index) {
-    return `Rock Question ${index}`;
+    if (place % NUM_CATEGORIES === 3) return 'Rock';
   };
 
   for (let i = 0; i < NUM_QUESTIONS; i++) {
     questions.Pop.push(`Pop Question ${i}`);
     questions.Science.push(`Science Question ${i}`);
     questions.Sports.push(`Sports Question ${i}`);
-    questions.Rock.push(this.createRockQuestion(i));
+    questions.Rock.push(`Rock Question ${i}`);
   }
 
   this.isPlayable = function () {
