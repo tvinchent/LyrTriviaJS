@@ -1,4 +1,4 @@
-// TODO: TU, rockquestion, OO, fichiers distincts // code smells, clean code
+// TODO: TU, OO, fichiers distincts // code smells, clean code
 
 // Utilisez des constantes pour améliorer la lisibilité.
 const MAX_PLAYERS = 6;
@@ -140,29 +140,4 @@ exports.Game = function() {
     this.goToNextPlayer();
     return true;
   };
-}
-
-// Votre code principal commence ici.
-
-const game = new Game();
-
-game.add('Chet');
-game.add('Pat');
-game.add('Sue');
-
-if (!game.isPlayable()) {
-  console.log('Minimum of 2 players necessary');
-} else {
-  let notAWinner = false;
-
-  do {
-    const roll = Math.floor(Math.random() * 6) + 1;
-    game.roll(roll);
-
-    if (Math.floor(Math.random() * 10) === 7) {
-      notAWinner = game.wrongAnswer();
-    } else {
-      notAWinner = game.goodAnswer();
-    }
-  } while (notAWinner);
 }

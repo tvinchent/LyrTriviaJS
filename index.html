@@ -1,10 +1,39 @@
 <html>
   <head>
-    <script type="text/javascript" src='./game.js'></script>
+    <script type="text/javascript" src='./game.js'>
+      // Chargement de la dépendance
+    </script>
   </head>
   <body>
     <h1>JBrains Legacy Code Retreat</h1>
     <h3>Javascript implementation</h3>
     <p>Use Chrome console or Firefox's firebug</p>
+    <script>
+
+// Lancement du jeu
+
+const game = new Game();
+
+game.add('Chet');
+game.add('Pat');
+game.add('Sue');
+
+if (!game.isPlayable()) {
+  console.log('Minimum of 2 players necessary');
+} else {
+  let notAWinner = false;
+
+  do {
+    const roll = Math.floor(Math.random() * 6) + 1;
+    game.roll(roll);
+
+    if (Math.floor(Math.random() * 10) === 7) {
+      notAWinner = game.wrongAnswer();
+    } else {
+      notAWinner = game.goodAnswer();
+    }
+  } while (notAWinner);
+}
+    </script>
   </body>
 </html>
