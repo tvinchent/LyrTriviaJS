@@ -62,7 +62,7 @@ exports.Game = function() {
     inPenaltyBox[this.howManyPlayers()] = false;
 
     console.log(playerName + " was added");
-    console.log("They are player number " + players.length);
+    console.log("He is player number " + players.length);
 
     return true;
   };
@@ -85,7 +85,7 @@ exports.Game = function() {
 
   this.roll = function(roll){
     console.log(players[currentPlayer] + " is the current player");
-    console.log("They have rolled a " + roll);
+    console.log("He has rolled a " + roll);
 
     if(inPenaltyBox[currentPlayer]){
       if(roll % 2 != 0){
@@ -142,7 +142,7 @@ exports.Game = function() {
 
     }else{
 
-      console.log("Answer was corrent!!!!");
+      console.log("Answer was correct!!!!");
 
       purses[currentPlayer] += 1;
       console.log(players[currentPlayer] + " now has " +
