@@ -57,8 +57,8 @@ exports.Game = function() {
 
   this.add = function(playerName){
     players.push(playerName);
-    places[this.howManyPlayers()] = 0;
-    purses[this.howManyPlayers()] = 0;
+    places[this.howManyPlayers()-1] = 0;
+    purses[this.howManyPlayers()-1] = 0;
     inPenaltyBox[this.howManyPlayers()] = false;
 
     console.log(playerName + " was added");
