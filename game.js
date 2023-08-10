@@ -1,19 +1,7 @@
 // TODO: TU, OO, fichiers distincts // code smells, clean code
-
-// Utilisez des constantes pour améliorer la lisibilité.
 const MAX_PLAYERS = 6;
-const NUM_QUESTIONS = 50;
 const NUM_CATEGORIES = 4;
 
-// Utilisez des objets littéraux pour stocker les questions par catégorie.
-const questions = {
-  Pop: [],
-  Science: [],
-  Sports: [],
-  Rock: []
-};
-
-// Créez un constructeur de jeu.
 exports = typeof window !== "undefined" && window !== null ? window : global;
 
 exports.Game = function() {
@@ -32,13 +20,6 @@ exports.Game = function() {
     if (place % NUM_CATEGORIES === 2) return 'Sports';
     if (place % NUM_CATEGORIES === 3) return 'Rock';
   };
-
-  for (let i = 0; i < NUM_QUESTIONS; i++) {
-    questions.Pop.push(`Pop Question ${i}`);
-    questions.Science.push(`Science Question ${i}`);
-    questions.Sports.push(`Sports Question ${i}`);
-    questions.Rock.push(`Rock Question ${i}`);
-  }
 
   this.isPlayable = function () {
     return this.howManyPlayers() >= 2;
