@@ -1,185 +1,171 @@
-exports = typeof window !== "undefined" && window !== null ? window : global;
+// Utilisez strict mode pour des pratiques de codage plus sûres.
+"use strict";
 
-exports.Game = function() {
-  var players          = new Array();
-  var places           = new Array(6);
-  var purses           = new Array(6);
-  var inPenaltyBox     = new Array(6);
+// Utilisez des constantes pour améliorer la lisibilité.
+const MAX_PLAYERS = 6;
+const NUM_QUESTIONS = 50;
+const NUM_CATEGORIES = 4;
 
-  var popQuestions     = new Array();
-  var scienceQuestions = new Array();
-  var sportsQuestions  = new Array();
-  var rockQuestions    = new Array();
+// Utilisez des objets littéraux pour stocker les questions par catégorie.
+const questions = {
+  Pop: [],
+  Science: [],
+  Sports: [],
+  Rock: []
+};
 
-  var currentPlayer    = 0;
-  var isGettingOutOfPenaltyBox = false;
+// Créez un constructeur de jeu.
+function Game() {
+  this.players = [];
+  this.places = new Array(MAX_PLAYERS).fill(0);
+  this.purses = new Array(MAX_PLAYERS).fill(0);
+  this.inPenaltyBox = new Array(MAX_PLAYERS).fill(false);
 
-  var didPlayerNotWon = function(){
-    return !(purses[currentPlayer] == 6)
-  };
+  this.currentPlayer = 0;
+  this.isGettingOutOfPenaltyBox = false;
 
-  var currentCategory = function(){
-    if(places[currentPlayer] == 0)
-      return 'Pop';
-    if(places[currentPlayer] == 4)
-      return 'Pop';
-    if(places[currentPlayer] == 8)
-      return 'Pop';
-    if(places[currentPlayer] == 1)
-      return 'Science';
-    if(places[currentPlayer] == 5)
-      return 'Science';
-    if(places[currentPlayer] == 9)
-      return 'Science';
-    if(places[currentPlayer] == 2)
-      return 'Sports';
-    if(places[currentPlayer] == 6)
-      return 'Sports';
-    if(places[currentPlayer] == 10)
-      return 'Sports';
+  this.currentCategory = function () {
+    const place = this.places[this.currentPlayer];
+    if (place % NUM_CATEGORIES === 0) return 'Pop';
+    if (place % NUM_CATEGORIES === 1) return 'Science';
+    if (place % NUM_CATEGORIES === 2) return 'Sports';
     return 'Rock';
   };
 
-  this.createRockQuestion = function(index){
-    return "Rock Question "+index;
+  this.createRockQuestion = function (index) {
+    return `Rock Question ${index}`;
   };
 
-  for(var i = 0; i < 50; i++){
-    popQuestions.push("Pop Question "+i);
-    scienceQuestions.push("Science Question "+i);
-    sportsQuestions.push("Sports Question "+i);
-    rockQuestions.push(this.createRockQuestion(i));
+  for (let i = 0; i < NUM_QUESTIONS; i++) {
+    questions.Pop.push(`Pop Question ${i}`);
+    questions.Science.push(`Science Question ${i}`);
+    questions.Sports.push(`Sports Question ${i}`);
+    questions.Rock.push(this.createRockQuestion(i));
+  }
+
+  this.isPlayable = function () {
+    return this.howManyPlayers() >= 2;
   };
 
-  this.isPlayable = function(){
-    return this.howManyPlayers() >= 2
-  };
+  this.add = function (playerName) {
+    if (this.howManyPlayers() >= MAX_PLAYERS) {
+      console.log("Maximum number of players reached.");
+      return false;
+    }
+    this.players.push(playerName);
+    const playerIndex = this.howManyPlayers() - 1;
+    this.places[playerIndex] = 0;
+    this.purses[playerIndex] = 0;
+    this.inPenaltyBox[playerIndex] = false;
 
-  this.add = function(playerName){
-    players.push(playerName);
-    places[this.howManyPlayers()-1] = 0;
-    purses[this.howManyPlayers()-1] = 0;
-    inPenaltyBox[this.howManyPlayers()] = false;
-
-    console.log(playerName + " was added");
-    console.log("He is player number " + players.length);
+    console.log(`${playerName} was added`);
+    console.log(`He is player number ${this.players.length}`);
 
     return true;
   };
 
-  this.howManyPlayers = function(){
-    return players.length;
+  this.howManyPlayers = function () {
+    return this.players.length;
   };
 
+  this.roll = function (roll) {
+    console.log(`${this.players[this.currentPlayer]} is the current player`);
+    console.log(`He has rolled a ${roll}`);
 
-  var askQuestion = function(){
-    if(currentCategory() == 'Pop')
-      console.log(popQuestions.shift());
-    if(currentCategory() == 'Science')
-      console.log(scienceQuestions.shift());
-    if(currentCategory() == 'Sports')
-      console.log(sportsQuestions.shift());
-    if(currentCategory() == 'Rock')
-      console.log(rockQuestions.shift());
-  };
-
-  var setPlaceAndCategoryThenAskQuestion = function(roll){
-    places[currentPlayer] = places[currentPlayer] + roll;
-    if(places[currentPlayer] > 11){
-      places[currentPlayer] = places[currentPlayer] - 12;
-    }
-
-    console.log(players[currentPlayer] + "'s new location is " + places[currentPlayer]);
-    console.log("The category is " + currentCategory());
-    askQuestion();
-  }
-
-  var goToNextPlayer = function (){
-    currentPlayer += 1;
-    if(currentPlayer == players.length)
-      currentPlayer = 0;
-  }
-
-  this.roll = function(roll){
-    console.log(players[currentPlayer] + " is the current player");
-    console.log("He has rolled a " + roll);
-
-    if(inPenaltyBox[currentPlayer]){
-      if(roll % 2 != 0){
-        isGettingOutOfPenaltyBox = true;
-        console.log(players[currentPlayer] + " is getting out of the penalty box");
-        setPlaceAndCategoryThenAskQuestion(roll);
-        
-      }else{
-        console.log(players[currentPlayer] + " is not getting out of the penalty box");
-        isGettingOutOfPenaltyBox = false;
+    if (this.inPenaltyBox[this.currentPlayer]) {
+      if (roll % 2 !== 0) {
+        this.isGettingOutOfPenaltyBox = true;
+        console.log(`${this.players[this.currentPlayer]} is getting out of the penalty box`);
+        this.setPlaceAndCategoryThenAskQuestion(roll);
+      } else {
+        console.log(`${this.players[this.currentPlayer]} is not getting out of the penalty box`);
+        this.isGettingOutOfPenaltyBox = false;
       }
-    }else{
-
-      setPlaceAndCategoryThenAskQuestion(roll);
+    } else {
+      this.setPlaceAndCategoryThenAskQuestion(roll);
     }
   };
 
-  var goodAnswerPhase = function(){
-    console.log('Answer was correct!!!!');
-    purses[currentPlayer] += 1;
-    console.log(players[currentPlayer] + " now has " +
-                purses[currentPlayer]  + " Gold Coins.");
+  this.setPlaceAndCategoryThenAskQuestion = function (roll) {
+    this.places[this.currentPlayer] += roll;
+    if (this.places[this.currentPlayer] > 11) {
+      this.places[this.currentPlayer] -= 12;
+    }
 
-    var winner = didPlayerNotWon();
+    console.log(`${this.players[this.currentPlayer]}'s new location is ${this.places[this.currentPlayer]}`);
+    console.log(`The category is ${this.currentCategory()}`);
+    this.askQuestion();
+  };
 
-    didPlayerNotWon() ? console.log("Next") : console.log(players[currentPlayer] + " HAS WON !");
+  this.askQuestion = function () {
+    console.log(questions[this.currentCategory()].shift());
+  };
 
-    goToNextPlayer();
-    return winner;
-  }
-
-  this.goodAnswer = function(){
-    if(inPenaltyBox[currentPlayer]){
-      if(isGettingOutOfPenaltyBox){
-        return goodAnswerPhase();
-      }else{
-        goToNextPlayer();
+  this.goodAnswer = function () {
+    if (this.inPenaltyBox[this.currentPlayer]) {
+      if (this.isGettingOutOfPenaltyBox) {
+        return this.goodAnswerPhase();
+      } else {
+        this.goToNextPlayer();
         return true;
       }
-
-    }else{
-      return goodAnswerPhase();
+    } else {
+      return this.goodAnswerPhase();
     }
   };
 
-  this.wrongAnswer = function(){
-		console.log('Question was incorrectly answered');
-		console.log(players[currentPlayer] + " was sent to the penalty box");
-		inPenaltyBox[currentPlayer] = true;
+  this.goodAnswerPhase = function () {
+    console.log('Answer was correct!!!!');
+    this.purses[this.currentPlayer]++;
+    console.log(`${this.players[this.currentPlayer]} now has ${this.purses[this.currentPlayer]} Gold Coins.`);
 
-    goToNextPlayer();
-		return true;
+    const winner = this.didPlayerNotWin();
+
+    winner ? console.log('Next') : console.log(`${this.players[this.currentPlayer]} HAS WON !`);
+
+    this.goToNextPlayer();
+    return winner;
   };
-};
 
-var notAWinner = false;
+  this.goToNextPlayer = function () {
+    this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+  };
 
-var game = new Game();
+  this.didPlayerNotWin = function () {
+    return this.purses[this.currentPlayer] !== 6;
+  };
+
+  this.wrongAnswer = function () {
+    console.log('Question was incorrectly answered');
+    console.log(`${this.players[this.currentPlayer]} was sent to the penalty box`);
+    this.inPenaltyBox[this.currentPlayer] = true;
+
+    this.goToNextPlayer();
+    return true;
+  };
+}
+
+// Votre code principal commence ici.
+
+const game = new Game();
 
 game.add('Chet');
 game.add('Pat');
 game.add('Sue');
 
-if( !game.isPlayable() ){
+if (!game.isPlayable()) {
   console.log('Minimum of 2 players necessary');
-}
-else{
-  do{
+} else {
+  let notAWinner = false;
 
-    game.roll(Math.floor(Math.random()*6) + 1);
-  
-    if(Math.floor(Math.random()*10) == 7){
+  do {
+    const roll = Math.floor(Math.random() * 6) + 1;
+    console.log(`\n--- New Roll: ${roll} ---\n`);
+
+    if (Math.floor(Math.random() * 10) === 7) {
       notAWinner = game.wrongAnswer();
-    }else{
+    } else {
       notAWinner = game.goodAnswer();
     }
-  
-  }while(notAWinner);
+  } while (notAWinner);
 }
-
