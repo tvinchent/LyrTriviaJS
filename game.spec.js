@@ -11,5 +11,6 @@ describe("The test environment", function() {
 });
 
 describe("Your specs...", function() {
-  // it ...
+  // it should work with 2 to 6 (or more) players
+  // it should display an alert when less than 2 players
 });

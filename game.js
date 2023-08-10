@@ -1,5 +1,4 @@
-// Utilisez strict mode pour des pratiques de codage plus sûres.
-"use strict";
+// TODO: TU, rockquestion, OO, fichiers distincts // code smells, clean code
 
 // Utilisez des constantes pour améliorer la lisibilité.
 const MAX_PLAYERS = 6;
@@ -15,7 +14,9 @@ const questions = {
 };
 
 // Créez un constructeur de jeu.
-function Game() {
+exports = typeof window !== "undefined" && window !== null ? window : global;
+
+exports.Game = function() {
   this.players = [];
   this.places = new Array(MAX_PLAYERS).fill(0);
   this.purses = new Array(MAX_PLAYERS).fill(0);
