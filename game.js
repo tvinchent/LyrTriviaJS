@@ -14,7 +14,7 @@ exports.Game = function() {
   var currentPlayer    = 0;
   var isGettingOutOfPenaltyBox = false;
 
-  var didPlayerWin = function(){
+  var didPlayerNotWon = function(){
     return !(purses[currentPlayer] == 6)
   };
 
@@ -126,9 +126,9 @@ exports.Game = function() {
     console.log(players[currentPlayer] + " now has " +
                 purses[currentPlayer]  + " Gold Coins.");
 
-    var winner = didPlayerWin();
+    var winner = didPlayerNotWon();
 
-    didPlayerWin() ? console.log("Next") : console.log(players[currentPlayer] + " HAS WON !");
+    didPlayerNotWon() ? console.log("Next") : console.log(players[currentPlayer] + " HAS WON !");
 
     goToNextPlayer();
     return winner;
